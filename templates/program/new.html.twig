@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+{% block body %}
+    <h1>Ajouter une série</h1>
+    <br>
+    {{ form_start(form) }}
+
+    {{ form_widget(form) }}
+    <button type="submit">Add program</button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}
