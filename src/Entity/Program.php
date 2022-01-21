@@ -22,9 +22,12 @@ class Program
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $poster;
 
-    #[ORM\ManyToOne(targetEntity: Category::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity:Category::class, inversedBy:"programs")]
+    #[ORM\JoinColumn(nullable:false)]
     private $Category;
+
+    #[ORM\OneToMany(targetEntity:Season::class, mappedBy:"programs")]
+    private $Season;
 
     public function getId(): ?int
     {
@@ -78,4 +81,47 @@ class Program
 
         return $this;
     }
+
+
+    public function getSeason(): ?Season
+    {
+        return $this->Season;
+    }
+
+    public function setSeason(?Season $Season): self
+    {
+        $this->Season = $Season;
+        return $this;
+    }
+
+    /**
+     * @param Season $season
+     * @return Program
+     */
+    public function addSeason(Season $season): self
+    {
+        if (!$this->seasons->contains($season)) {
+            $this->seasons[] = $season;
+            $season->setProgram($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Program $program
+     * @return Category
+     */
+    public function removeProgram(Program $program): self
+    {
+        if ($this->programs->removeElement($program)) {
+            // set the owning side to null (unless already changed)
+            if ($program->getCategory() === $this) {
+                $program->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
