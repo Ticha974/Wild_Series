@@ -95,32 +95,4 @@ class Season
 
         return $this;
     }
-
-    /**
-     * @param Episode $episode
-     * @return Season
-     */
-    public function addEpisode(Episode $episode): self
-    {
-        if (!$this->episodes->contains($episode)) {
-            $this->episodes[] = $episode;
-            $episode->setSeason($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Episode $episode
-     * @return Season
-     */
-    public function removeEpisode(Episode $episode): self
-    {
-        if ($this->episodes->removeElement($episode) {
-            if ($episode->getSeason() === $this) {
-                $episode->setSeason(null);
-            }
-        }
-        return $this;
-    }
 }
