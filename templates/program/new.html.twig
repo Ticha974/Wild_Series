@@ -5,7 +5,9 @@
     <h1>Ajouter une série</h1>
     <br>
     {{ form_start(form) }}
-
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(form) }}
+    </div>
     {{ form_widget(form) }}
     <button type="submit">Add program</button>
     {{ form_end(form) }}

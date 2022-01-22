@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\ProgramRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
+#[UniqueEntity('title', message: 'Ce titre existe déjà')]
 class Program
 {
     #[ORM\Id]
@@ -14,9 +17,13 @@ class Program
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: 'Le titre est obligatoire')]
+    #[Assert\Length(max: 255, maxMessage: 'The title cannot be longer than {{ limit }} characters.')]
     private $title;
 
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
+    #[Assert\Regex(pattern: '/^(?!.*plus belle la vie).*/', message: 'On parle de vraies séries ici')]
     private $summary;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
