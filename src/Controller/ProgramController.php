@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Episode;
 use App\Entity\Program;
 use App\Entity\Season;
+use App\Entity\Actor;
+use App\Repository\ActorRepository;
 use App\Repository\EpisodeRepository;
 use App\Repository\ProgramRepository;
 use App\Repository\SeasonRepository;

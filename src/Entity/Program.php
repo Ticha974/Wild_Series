@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProgramRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -35,6 +37,17 @@ class Program
 
     #[ORM\OneToMany(targetEntity:Season::class, mappedBy:"programs")]
     private $Season;
+
+    #[ORM\ManyToMany(targetEntity: Actor::class, mappedBy: 'programs')]
+    #[ORM\JoinTable(name: 'actor_program')]
+    #[ORM\JoinColumn(name: "program_id", referencedColumnName: "id")]
+    #[ORM\InverseJoinColumn(name: "actor_id", referencedColumnName: "id")]
+    private $actors;
+
+    public function __construct()
+    {
+        $this->actors = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -126,6 +139,33 @@ class Program
             if ($program->getCategory() === $this) {
                 $program->setCategory(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Actor[]
+     */
+    public function getActors(): Collection
+    {
+        return $this->actors;
+    }
+
+    public function addActor(Actor $actor): self
+    {
+        if (!$this->actors->contains($actor)) {
+            $this->actors[] = $actor;
+            $actor->addProgram($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActor(Actor $actor): self
+    {
+        if ($this->actors->removeElement($actor)) {
+            $actor->removeProgram($this);
         }
 
         return $this;
